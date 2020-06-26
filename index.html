@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Source+Sans+Pro:wght@600&display=swap"
+        rel="stylesheet">
+    <title>Guess the word| Scrabble game!!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        header {
+            width: 100%;
+            line-height: 15vh;
+            background-color: #3498db;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 2rem;
+            color: white;
+            font-family: 'Carter One', cursive;
+            letter-spacing: 12px;
+            text-shadow: 0px 1px 0 #efefef,
+
+
+                0px 5px 5px rgba(0, 0, 0.1),
+                0px 8px 15px rgba(0, 0, 0.1);
+        }
+
+        #parent {
+            background-color: #74b9ff;
+            height: 85vh;
+            width: 100%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+
+
+        }
+
+        .gamearea {
+            background-color: #3498db;
+            width: 45%;
+            display: flex;
+            height: 401px;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            box-shadow: 0px 11px 6px -6px black;
+        }
+
+        #btn {
+            font-family: 'Source Sans Pro', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            outline: none;
+            border: #2f3542;
+            text-decoration: none;
+            margin-top: 10px;
+            color: #834beb;
+
+            font-weight: 600;
+            padding: 1rem 2rem;
+            background-color: white;
+            text-transform: uppercase;
+            transition-property: all;
+            transition-duration: 0.5s;
+            transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+
+        }
+
+
+        #btn:hover,
+        #btn:focus {
+            letter-spacing: 0.125rem;
+            word-spacing: 0.2rem;
+        }
+
+
+        #input {
+            width: 40%;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 25px;
+            outline: none;
+            border: none;
+            background-color: #dff9fb;
+            color: black;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+
+        }
+
+        p {
+            display: inline;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bolder;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+
+        #hint {
+            font-size: 1.5rem;
+            text-align: center;
+            position: relative;
+            top: 85px;
+            color: #2f3542;
+            font-size: 21px;
+        }
+
+        /* X-Small devices (portrait phones, less than 576px)
+ No media query for `xs` since this is the default in Bootstrap
+//  
+// X-Small devices (portrait phones, less than 576px)*/
+        @media (max-width: 575.98px) {
+            h3 {
+                letter-spacing: 6px;
+                font-size: 25px;
+            }
+
+            .gamearea {
+
+                width: 90%;
+            }
+
+            p {
+                font-size: 1.5rem;
+                text-align: center;
+                position: relative;
+                top: -49px;
+            }
+
+            #input {
+                width: 68%;
+            }
+
+        }
+
+        /* Small devices (landscape phones, less than 768px)*/
+        @media (max-width: 398.98px) {
+            h3 {
+                letter-spacing: 4px;
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 20px;
+                text-align: center;
+                position: relative;
+                top: -49px;
+                font-weight: bold;
+            }
+
+            #hint {
+                font-size: 1.5rem;
+                text-align: center;
+                position: relative;
+                top: 81px;
+                color: black;
+                font-size: 15px;
+            }
+        }
+
+
+
+
+        /* Medium devices (tablets, less than 992px) */
+        @media (max-width: 991.98px) {}
+
+        /* Large devices (desktops, less than 1200px) */
+        @media (max-width: 1199.98px) {}
+
+        /* X-Large devices (large desktops, less than 1400px)*/
+        @media (max-width: 1399.98px) {}
+    </style>
+</head>
+
+<body>
+    <header>
+        <h3>Guess The word game!! </h3>
+    </header>
+
+    <div id="parent">
+        <div class="gamearea">
+            <p class="msg"> </p>
+            <input type="text" name="" id="input" class="hidden">
+            <button id="btn">Click here to Start</button>
+            <p id="hint"> Hint : This Game includes only Fruits name .</p>
+        </div>
+
+    </div>
+    <script>
+
+        const msg = document.querySelector('.msg');
+        const guess = document.querySelector('input');
+        const btn = document.querySelector('#btn');
+        let play = false;
+
+        let newWords = "";
+        let jumbleWorlds = "";
+        let wordslist = ['Apple', 'Mango', 'Orange', 'Banana', 'Watermelon', 'Peach', 'Guava', 'Cherries', 'Strawberries'];
+
+        const createNewWords = () => {
+            let ranNum = Math.floor(Math.random() * wordslist.length);
+
+            let final = wordslist[ranNum];
+            return final;
+
+
+
+        }
+
+        const scrambledWords = (arr) => {
+
+            for (let i = arr.length - 1; i > 0; i--) {
+                let temp = arr[i];
+
+
+                let j = Math.floor(Math.random() * (i + 1));
+
+
+                arr[i] = arr[j];
+                arr[j] = temp;
+
+                return arr;
+            }
+        }
+
+        btn.addEventListener('click', function () {
+            if (!play) {
+                play = true;
+                btn.innerHTML = "Guess";
+                guess.classList.toggle('hidden');
+                newWords = createNewWords();
+                jumbleWorlds = scrambledWords(newWords.split("")).join("");
+
+                msg.innerHTML = `Guess the word - &quot; ${jumbleWorlds} &quot; `;
+            }
+            else {
+                let tempwords = guess.value;
+                if (tempwords === newWords) {
+                    play = false;
+                    msg.innerHTML = `Awesome your answer  - &quot;  ${tempwords} &quot; is correct`;
+                    guess.value = "";
+                    btn.innerHTML = "Next Word"
+                    guess.classList.toggle('hidden');
+                }
+                else {
+                    console.log('incorrect');
+
+                    msg.innerHTML = `oops!! your answer is incorrect try again- &quot; ${jumbleWorlds} &quot; `;
+                    btn.innerHTML = "Try Again";
+                    guess.classList.toggle('hidden');
+                }
+            }
+        })
+
+
+    </script>
+
+</body>
+
+</html>
